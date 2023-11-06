@@ -1,8 +1,33 @@
-> Project Status : **Under Development**
+<table><tr><td> Project Status : <b>Under Development</b></table></tr></td>
+
+# How to Use
+
+First open config file e.g. Kasir.dll.config or Kasir.exe.config. If not exist, create new one.
+
+<table>
+<tr>
+<th>Example config file</th>
+</tr>
+<tr>
+<td>
+<pre lang="xml">
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<appSettings>
+		<add key="connectionStrings" value="server=localhost;user=root;password=;database=iCassierDB" />
+		<add key="DatabaseType" value="MySQL" />
+	</appSettings>
+</configuration>
+</pre>
+</td>
+</tr>
+</table>
+
+Change connectionStrings to your connection string. You can change databaseType to MySQL, SQLServer or SQLite
 
 # Prototype
 
-[Figma](https://www.figma.com/proto/ILIZ4OGPJhRXcHfpUSh1IZ/Untitled?type=design&node-id=14-1169&t=a6WPHoOc4rHClt5O-1&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=14%3A1169&mode=design)
+[<kbd><br>Figma<br></kbd>](https://www.figma.com/proto/ILIZ4OGPJhRXcHfpUSh1IZ/Untitled?type=design&node-id=14-1169&t=a6WPHoOc4rHClt5O-1&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=14%3A1169&mode=design)
 
 # Screenshoots
 
@@ -17,21 +42,3 @@
 ![TRANSACTION_WINDOW](https://github.com/rolandvincent/Kasir/assets/52077393/7ae6d8bc-7005-48c9-8a88-c962ba8c51fb)
 
 _And many more..._
-
-# How to Use
-
-First open config file e.g. Kasir.dll.config or Kasir.exe.config. If not exist, create new one.
-
-Example config file
-
-```xml
-<?xml version="1.0" encoding="utf-8" ?>
-<configuration>
-	<appSettings>
-		<add key="connectionStrings" value="server=localhost;user=root;password=;database=iCassierDB" />
-		<add key="DatabaseType" value="MySQL" />
-	</appSettings>
-</configuration>
-```
-
-Change connectionStrings to your connection string. You can change databaseType to MySQL, SQLServer or SQLite
