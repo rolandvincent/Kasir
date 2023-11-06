@@ -1,24 +1,37 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
 using System.Windows;
 
 namespace Kasir.DbContexts
 {
     public class iCassierDbContextFactory : IDesignTimeDbContextFactory<iCassierDbContext>
     {
-        private readonly string _connectionString = "server=localhost;user=root;password=;database=iCassierDB";
         public iCassierDbContext CreateDbContext(string[] args)
         {
+            string connectionString = ConfigurationManager.AppSettings["connectionStrings"] ?? "server=localhost;user=root;password=;database=iCassierDB";
+            string DB_Type = ConfigurationManager.AppSettings["connectionType"] ?? "MySQL";
             iCassierDbContext? dbContext = null;
             try
             {
                 var optionsBuilder = new DbContextOptionsBuilder<iCassierDbContext>();
-                optionsBuilder.UseMySql(_connectionString, ServerVersion.AutoDetect(_connectionString));
+                if (DB_Type.ToLower() == "mysql")
+                {
+                    optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+                }else if(DB_Type.ToLower() == "sqlserver")
+                {
+                    optionsBuilder.UseSqlServer(connectionString);
+                }
+                else if (DB_Type.ToLower() == "sqlite")
+                {
+                    optionsBuilder.UseSqlite(connectionString);
+                }
+                else
+                {
+                    MessageBox.Show($"Connection Type '{DB_Type}' not supported.", "iCassier SQL Connection", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Environment.Exit(1);
+                }
 
                 dbContext = new iCassierDbContext(optionsBuilder.Options);
             }
