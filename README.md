@@ -19,7 +19,7 @@
 *And many more...*
 
 # How to Use
-First open config file e.g. Kasir.dll.config or Kasir.exe.config
+First open config file e.g. Kasir.dll.config or Kasir.exe.config. If not exist, create new one.
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
@@ -30,4 +30,4 @@ First open config file e.g. Kasir.dll.config or Kasir.exe.config
 </configuration>
 ```
 
-Change connectionStrings to your database string. You can change databaseType to MySQL, SQLServer or SQLite
+Change connectionStrings to your connection string. You can change databaseType to MySQL, SQLServer or SQLite
