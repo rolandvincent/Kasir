@@ -11,7 +11,7 @@ namespace Kasir.DbContexts
         public iCassierDbContext CreateDbContext(string[] args)
         {
             string connectionString = ConfigurationManager.AppSettings["connectionStrings"] ?? "server=localhost;user=root;password=;database=iCassierDB";
-            string DB_Type = ConfigurationManager.AppSettings["connectionType"] ?? "MySQL";
+            string DB_Type = ConfigurationManager.AppSettings["databaseType"] ?? "MySQL";
             iCassierDbContext? dbContext = null;
             try
             {

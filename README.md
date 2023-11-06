@@ -16,10 +16,14 @@
 
 ![TRANSACTION_WINDOW](https://github.com/rolandvincent/Kasir/assets/52077393/7ae6d8bc-7005-48c9-8a88-c962ba8c51fb)
 
-*And many more...*
+_And many more..._
 
 # How to Use
+
 First open config file e.g. Kasir.dll.config or Kasir.exe.config. If not exist, create new one.
+
+Example config file
+
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
