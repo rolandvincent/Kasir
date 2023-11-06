@@ -1,0 +1,260 @@
+﻿<Window x:Class="Kasir.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:themes="http://schemas.actiprosoftware.com/winfx/xaml/themes"
+        xmlns:navigationpane="clr-namespace:NavigationPane;assembly=NavigationPane"
+        xmlns:converters="clr-namespace:Kasir.Utils.Converters"
+        xmlns:controls="clr-namespace:Kasir.Utils.Controls"
+        xmlns:vm="clr-namespace:Kasir.ViewModels"
+        xmlns:loadingspinnercontrol="clr-namespace:LoadingSpinnerControl;assembly=LoadingSpinnerControl"
+        mc:Ignorable="d"
+        Title="iCassier (Beta v1.0)"
+        Height="650"
+        Width="1150"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        x:Name="root"
+        SizeChanged="root_SizeChanged"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <converters:WindowStateToVisibilityConverter x:Key="WindowStateToVisible" />
+        <converters:VisibilityToBoolConverter x:Key="VisibilityToBoolConverter" />
+        <converters:IntEnumToBooleanConverter x:Key="IntEnumToBooleanConverter" />
+        <ContextMenu x:Key="ProfileContextMenu"
+                     Placement="Bottom">
+            <MenuItem IsEnabled="False">
+                <MenuItem.Header>
+                    <StackPanel>
+                        <Path RenderTransformOrigin="0.5, 0.5"
+                              Data="M22.766,0.001C10.194,0.001,0,10.193,0,22.766s10.193,22.765,22.766,22.765c12.574,0,22.766-10.192,22.766-22.765
+            S35.34,0.001,22.766,0.001z M22.766,6.808c4.16,0,7.531,3.372,7.531,7.53c0,4.159-3.371,7.53-7.531,7.53
+            c-4.158,0-7.529-3.371-7.529-7.53C15.237,10.18,18.608,6.808,22.766,6.808z M22.761,39.579c-4.149,0-7.949-1.511-10.88-4.012
+            c-0.714-0.609-1.126-1.502-1.126-2.439c0-4.217,3.413-7.592,7.631-7.592h8.762c4.219,0,7.619,3.375,7.619,7.592
+            c0,0.938-0.41,1.829-1.125,2.438C30.712,38.068,26.911,39.579,22.761,39.579z"
+                              Fill="White"
+                              Stretch="Uniform"
+                              Margin="5 10 5 5"
+                              HorizontalAlignment="Center" 
+                              Height="100"
+                              Width="100"/>
+                        <TextBlock Text="Roland Vincent"
+                                   Margin="5 10 5 5"
+                                   FontSize="20"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock Text="Staff"
+                                   Margin="5 0 5 5"
+                                   FontSize="16"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+            <Separator />
+            <MenuItem Click="MenuItem_Click">
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M38.82,67H29.18a1,1,0,0,1-.94-.66L26.4,61.17l-2.31-1-3.9-1.64-5,2.37a1,1,0,0,1-1.14-.19c-3.44-3.41-3.44-3.41-6.85-6.85a1,1,0,0,1-.19-1.14l2.37-4.95C8.79,46.3,8.32,45.19,7.81,44l-1-2.36L1.66,39.76A1,1,0,0,1,1,38.82V29.18a1,1,0,0,1,.66-.94L6.83,26.4l1-2.38c.51-1.22,1-2.33,1.61-3.84l-2.37-5a1,1,0,0,1,.2-1.14c3.4-3.4,3.4-3.4,6.84-6.81a1,1,0,0,1,1.14-.19l5,2.37,3.86-1.62,2.35-1,1.84-5.17A1,1,0,0,1,29.18,1h9.64a1,1,0,0,1,.94.66L41.6,6.83l2.34,1c1.24.51,2.35,1,3.88,1.62l4.94-2.37a1,1,0,0,1,1.14.19c3.44,3.41,3.44,3.41,6.84,6.81a1,1,0,0,1,.2,1.14l-2.37,5c.64,1.51,1.1,2.62,1.61,3.84l1,2.38,5.17,1.84a1,1,0,0,1,.66.94v9.64a1,1,0,0,1-.66.94L61.17,41.6l-1,2.37c-.51,1.22-1,2.33-1.61,3.84l2.37,4.95a1,1,0,0,1-.19,1.14c-3.41,3.44-3.41,3.44-6.85,6.85a1,1,0,0,1-1.14.19l-4.94-2.37L43.9,60.21l-2.3,1-1.84,5.17A1,1,0,0,1,38.82,67Zm-8.93-2h8.22l1.75-4.92a1,1,0,0,1,.56-.58l2.71-1.13c1.36-.57,2.57-1.07,4.32-1.82a1,1,0,0,1,.82,0L53,58.83c2.79-2.76,3.08-3,5.84-5.84l-2.26-4.72a1,1,0,0,1,0-.82c.74-1.72,1.23-2.92,1.79-4.25l1.16-2.78a1,1,0,0,1,.58-.56L65,38.11V29.89l-4.92-1.75a1,1,0,0,1-.58-.56l-1.17-2.79c-.55-1.33-1-2.52-1.78-4.24a1,1,0,0,1,0-.82L58.83,15c-2.75-2.76-3-3.05-5.84-5.81l-4.72,2.26a1,1,0,0,1-.82,0l-4.28-1.8L40.42,8.5a1,1,0,0,1-.56-.58L38.11,3H29.89L28.14,7.92a1,1,0,0,1-.56.58L24.82,9.66c-1.34.55-2.54,1.05-4.27,1.79a1,1,0,0,1-.82,0L15,9.17c-2.79,2.76-3.09,3.05-5.84,5.81l2.26,4.75a1,1,0,0,1,0,.82c-.73,1.72-1.23,2.92-1.78,4.24L8.5,27.58a1,1,0,0,1-.58.56L3,29.89v8.22l4.92,1.75a1,1,0,0,1,.58.56l1.16,2.77c.56,1.34,1.05,2.53,1.79,4.26a1,1,0,0,1,0,.82L9.17,53c2.76,2.79,3.05,3.08,5.84,5.84l4.72-2.26a1,1,0,0,1,.82,0c1.75.75,3,1.25,4.31,1.81l2.72,1.14a1,1,0,0,1,.56.58Z
+                                    M34,52.27A18.28,18.28,0,1,1,52.28,34,18.29,18.29,0,0,1,34,52.27Zm0-34.55A16.28,16.28,0,1,0,50.28,34,16.3,16.3,0,0,0,34,17.72Z
+                                    M34,35.63a6.27,6.27,0,1,1,6.27-6.27A6.27,6.27,0,0,1,34,35.63Zm0-10.54a4.27,4.27,0,1,0,4.27,4.27A4.28,4.28,0,0,0,34,25.09Z
+                                    M45.77,47.63a1,1,0,0,1-1-.91,10.78,10.78,0,0,0-5.34-8.41,10.55,10.55,0,0,1-10.88,0,10.75,10.75,0,0,0-5.35,8.4,1,1,0,0,1-1.08.91,1,1,0,0,1-.91-1.09,12.72,12.72,0,0,1,6.93-10.27,1,1,0,0,1,1,.07,8.58,8.58,0,0,0,9.66,0,1,1,0,0,1,1-.07,12.76,12.76,0,0,1,6.91,10.28,1,1,0,0,1-.91,1.09Z"
+                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=MenuItem,Mode=FindAncestor}}"
+                              Stretch="Fill"
+                              Height="20"
+                              Width="20"
+                              StrokeThickness="1"
+                              Margin="0 0 10 0" />
+                        <TextBlock Text="Profile Settings" />
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+
+            <MenuItem>
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M468.3,255.8c0.1-0.1,0.1-0.1,0.2-0.2c0.3-0.4,0.6-0.7,0.8-1.1c0.1-0.1,0.1-0.2,0.2-0.3c0.2-0.4,0.5-0.8,0.7-1.2
+                                    c0-0.1,0.1-0.2,0.1-0.2c0.2-0.4,0.4-0.8,0.6-1.3c0-0.1,0-0.1,0.1-0.2c0.2-0.4,0.3-0.9,0.5-1.4c0-0.1,0-0.2,0.1-0.2
+                                    c0.1-0.5,0.3-0.9,0.3-1.4c0-0.2,0-0.3,0.1-0.5c0.1-0.4,0.1-0.8,0.2-1.2c0.1-0.6,0.1-1.1,0.1-1.7c0-0.6,0-1.1-0.1-1.7
+                                    c0-0.4-0.1-0.8-0.2-1.2c0-0.2,0-0.3-0.1-0.5c-0.1-0.5-0.2-0.9-0.3-1.4c0-0.1,0-0.2-0.1-0.2c-0.1-0.5-0.3-0.9-0.5-1.4
+                                    c0-0.1,0-0.1-0.1-0.2c-0.2-0.4-0.4-0.9-0.6-1.3c0-0.1-0.1-0.2-0.1-0.2c-0.2-0.4-0.4-0.8-0.7-1.2c-0.1-0.1-0.1-0.2-0.2-0.3
+                                    c-0.3-0.4-0.5-0.8-0.8-1.1c-0.1-0.1-0.1-0.1-0.2-0.2c-0.4-0.4-0.7-0.9-1.2-1.3l-98.9-98.8c-6.7-6.7-17.6-6.7-24.3,0
+                                    c-6.7,6.7-6.7,17.6,0,24.3l69.6,69.6H136.8c-9.5,0-17.2,7.7-17.2,17.1c0,9.5,7.7,17.2,17.2,17.2h276.8l-69.1,69.1
+                                    c-6.7,6.7-6.7,17.6,0,24.3c3.3,3.3,7.7,5,12.1,5s8.8-1.7,12.1-5l98.3-98.3C467.5,256.6,467.9,256.2,468.3,255.8z 
+                                    M110.7,34.3h128c9.5,0,17.2-7.7,17.2-17.1c0-9.5-7.7-17.2-17.2-17.2h-128C59.4,0,17.6,41.8,17.6,93.1v303.7
+                                    c0,51.3,41.8,93.1,93.1,93.1h125.9c9.5,0,17.2-7.7,17.2-17.1c0-9.5-7.7-17.2-17.2-17.2H110.7c-32.4,0-58.8-26.4-58.8-58.8V93.1
+                                    C52,60.6,78.3,34.3,110.7,34.3z"
+                              Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=MenuItem,Mode=FindAncestor}}"
+                              Stretch="Fill"
+                              Height="20"
+                              Width="20"
+                              StrokeThickness="1"
+                              Margin="0 0 10 0" />
+                        <TextBlock Text="Logout" />
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+        </ContextMenu>
+    </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}"
+                        CanExecute="CommandBinding_CanExecute"
+                        Executed="CommandBinding_Executed_Close" />
+        <CommandBinding Command="{x:Static SystemCommands.MaximizeWindowCommand}"
+                        CanExecute="CommandBinding_MaximizeCanExecute"
+                        Executed="CommandBinding_Executed_Maximize" />
+        <CommandBinding Command="{x:Static SystemCommands.MinimizeWindowCommand}"
+                        CanExecute="CommandBinding_CanExecute"
+                        Executed="CommandBinding_Executed_Minimize" />
+        <CommandBinding Command="{x:Static SystemCommands.RestoreWindowCommand}"
+                        CanExecute="CommandBinding_RestoreCanExecute"
+                        Executed="CommandBinding_Executed_Restore" />
+    </Window.CommandBindings>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="40"
+                      CornerRadius="10"
+                      ResizeBorderThickness="5"
+                      UseAeroCaptionButtons="False"
+                      GlassFrameThickness="0" />
+    </WindowChrome.WindowChrome>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border x:Name="MainWindowBorder"
+                Background="{DynamicResource Control.Background}"
+                Grid.RowSpan="2"
+                CornerRadius="10" />
+        <Border Background="{DynamicResource Menu.Background}"
+                Panel.ZIndex="999"
+                BorderBrush="{DynamicResource Menu.Background}">
+            <Grid>
+                <TextBlock Style="{DynamicResource CaptionText}"
+                           Padding="10 0"
+                           x:Name="TitleBarCaptionText"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Mode=TwoWay}" />
+                <Border VerticalAlignment="Top"
+                        HorizontalAlignment="Stretch"
+                        Height="5"
+                        Background="#0000"
+                        Panel.ZIndex="100"
+                        WindowChrome.IsHitTestVisibleInChrome="False" />
+                <Border VerticalAlignment="Stretch"
+                        HorizontalAlignment="Right"
+                        Width="5"
+                        Background="#0000"
+                        Panel.ZIndex="100"
+                        WindowChrome.IsHitTestVisibleInChrome="False" />
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            x:Name="TitleBarButtonPanel">
+                    <Button Style="{DynamicResource TitleBarButtonStyle}"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            ToolTip="Profile"
+                            x:Name="BtnProfile"
+                            Click="BtnProfile_Click"
+                            Width="auto">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center"
+                                       Margin="0 0 5 0"
+                                       FontSize="16"
+                                       Text="Roland Vincent" />
+                            <Path RenderTransformOrigin="0.5, 0.5"
+                                  Data="M22.766,0.001C10.194,0.001,0,10.193,0,22.766s10.193,22.765,22.766,22.765c12.574,0,22.766-10.192,22.766-22.765
+                                        S35.34,0.001,22.766,0.001z M22.766,6.808c4.16,0,7.531,3.372,7.531,7.53c0,4.159-3.371,7.53-7.531,7.53
+                                        c-4.158,0-7.529-3.371-7.529-7.53C15.237,10.18,18.608,6.808,22.766,6.808z M22.761,39.579c-4.149,0-7.949-1.511-10.88-4.012
+                                        c-0.714-0.609-1.126-1.502-1.126-2.439c0-4.217,3.413-7.592,7.631-7.592h8.762c4.219,0,7.619,3.375,7.619,7.592
+                                        c0,0.938-0.41,1.829-1.125,2.438C30.712,38.068,26.911,39.579,22.761,39.579z"
+                                  Fill="White"
+                                  Stretch="Uniform">
+                                <Path.RenderTransform>
+                                    <ScaleTransform ScaleX="0.8"
+                                                    ScaleY="0.8" />
+                                </Path.RenderTransform>
+                            </Path>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{DynamicResource TitleBarButtonStyle}"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            Content="0"
+                            ToolTip="Minimize"
+                            Focusable="False"
+                            Command="{x:Static SystemCommands.MinimizeWindowCommand}" />
+                    <Button Style="{DynamicResource TitleBarButtonStyle}"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            ToolTip="Maximize"
+                            Focusable="False"
+                            Visibility="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}, ConverterParameter=Maximize, Converter={StaticResource WindowStateToVisible}}"
+                            Command="{x:Static SystemCommands.MaximizeWindowCommand}"
+                            Content="1" />
+                    <Button Style="{DynamicResource TitleBarButtonStyle}"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            ToolTip="Restore"
+                            Focusable="False"
+                            Visibility="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}, ConverterParameter=Restore, Converter={StaticResource WindowStateToVisible}}"
+                            Command="{x:Static SystemCommands.RestoreWindowCommand}"
+                            Content="2" />
+                    <Button Style="{DynamicResource CloseButtonStyle}"
+                            WindowChrome.IsHitTestVisibleInChrome="True"
+                            Focusable="False"
+                            ToolTip="Close"
+                            Command="{x:Static SystemCommands.CloseWindowCommand}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Grid Grid.RowSpan="2"
+              Panel.ZIndex="1"
+              x:Name="ModalContainer">
+        </Grid>
+        <Grid Grid.Row="1" x:Name="PART_ContentArea">
+            <Grid.ColumnDefinitions> 
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Background="{DynamicResource Menu.Background}"
+                        MinWidth="200">
+                <controls:NavigationMenuItem Content="Home"
+                                             IsChecked="{Binding MenuSelectedIndex, Converter={StaticResource IntEnumToBooleanConverter}, ConverterParameter=1}"
+                                             Command="{Binding HomeCommand}"></controls:NavigationMenuItem>
+                <controls:NavigationMenuItem Content="Data Produk"
+                                             IsChecked="{Binding MenuSelectedIndex, Converter={StaticResource IntEnumToBooleanConverter}, ConverterParameter=2}"
+                                             Command="{Binding ProductManagementCommand}"></controls:NavigationMenuItem>
+                <controls:NavigationMenuItem Content="Kategori"
+                                             IsChecked="{Binding MenuSelectedIndex, Converter={StaticResource IntEnumToBooleanConverter}, ConverterParameter=3}"
+                                             Command="{Binding CategoryManagementCommand}"></controls:NavigationMenuItem>
+                <controls:NavigationMenuItem Content="Data Pelanggan"
+                                             IsChecked="{Binding MenuSelectedIndex, Converter={StaticResource IntEnumToBooleanConverter}, ConverterParameter=4}"
+                                             Command="{Binding CustomerManagementCommand}"></controls:NavigationMenuItem>
+                <controls:NavigationMenuItem Content="Riwayat Transaksi"
+                                             IsChecked="{Binding MenuSelectedIndex, Converter={StaticResource IntEnumToBooleanConverter}, ConverterParameter=5}"
+                                             Command="{Binding HistoryTransactionCommand}"></controls:NavigationMenuItem>
+                <controls:NavigationMenuItem Content="Statistics"></controls:NavigationMenuItem>
+            </StackPanel>
+            <Grid Grid.Column="1">
+                <ContentControl x:Name="Pages"
+                                Content="{Binding CurrentView}" />
+            </Grid>
+        </Grid>
+        <Grid.OpacityMask>
+            <VisualBrush Visual="{Binding ElementName=MainWindowBorder}" />
+        </Grid.OpacityMask>
+        <Grid.Style>
+            <Style TargetType="{x:Type Grid}">
+                <Style.Triggers>
+                    <!-- Add to avoid border disappearing when window is maximised -->
+                    <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}"
+                                 Value="Maximized">
+                        <Setter Property="Margin"
+                                Value="5" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}"
+                                 Value="Normal">
+                        <Setter Property="Margin"
+                                Value="0" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+    </Grid>
+</Window>

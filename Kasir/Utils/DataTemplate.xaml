@@ -1,0 +1,48 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:Kasir.ViewModels"
+                    xmlns:puvm="clr-namespace:Kasir.ViewModels.PopupModelVM"
+                    xmlns:v="clr-namespace:Kasir.Views"
+                    xmlns:puv="clr-namespace:Kasir.Views.PopupModalView">
+    <DataTemplate DataType="{x:Type vm:HomeVM}">
+        <v:Home />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:UserManagementVM}">
+        <v:UserManagement />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:ProductManagementVM}">
+        <v:ProductManagement />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:CategoryManagementVM}">
+        <v:CategoryManagement />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:CustomerManagementVM}">
+        <v:CustomerManagement />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:TransactionMenuVM}">
+        <v:TransactionMenu />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:HistoryTransactionVM}">
+        <v:HistoryTransaction />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LoginVM}">
+        <v:Login />
+    </DataTemplate>
+    
+    <!-- PopupVM -->
+
+    <DataTemplate DataType="{x:Type puvm:AddProductVM}">
+        <puv:AddProduct />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type puvm:AddCategoryVM}">
+        <puv:AddCategory />
+    </DataTemplate>
+</ResourceDictionary>

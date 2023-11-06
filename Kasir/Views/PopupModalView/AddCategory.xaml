@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="Kasir.Views.PopupModalView.AddCategory"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Kasir.Views.PopupModalView"
+             xmlns:controls="clr-namespace:Kasir.Utils.Controls"
+             xmlns:validations="clr-namespace:Kasir.Commons.Validations"
+             mc:Ignorable="d"
+             Foreground="White"
+             KeyDown="UserControl_KeyDown"
+             Loaded="UserControl_Loaded"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  Style="{DynamicResource CScrollView}">
+        <Grid Margin="20"
+              Width="600">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin"
+                            Value="0 5" />
+                    <Setter Property="FontSize"
+                            Value="20" />
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto"  />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Nama Kategori *" />
+                <controls:PlaceholderTextBox CornerRadius="5"
+                                             x:Name="txt_CategoryName"
+                                             FontSize="20">
+                    <Binding Path="CategoryName"
+                             UpdateSourceTrigger="PropertyChanged"
+                             Mode="TwoWay"
+                             ValidatesOnDataErrors="True">
+                    </Binding>
+                </controls:PlaceholderTextBox>
+                <TextBlock Foreground="Red"
+                           FontSize="14"
+                           Text="{Binding ElementName=txt_CategoryName, Path=(Validation.Errors)[0].ErrorContent}"
+                           Visibility="{Binding ElementName=txt_CategoryName, Path=(Validation.HasError), Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Grid.Row="1"
+                        HorizontalAlignment="Right"
+                        Margin="0 20 0 0">
+                <Button Style="{DynamicResource FlatButton5}"
+                        Background="#BA4A4A"
+                        Foreground="White"
+                        Margin="10 0 0 0"
+                        Padding="40 10"
+                        Content="Tutup"
+                        Command="{Binding CancelCommand}" />
+                <Button Style="{DynamicResource FlatButton5}"
+                        Background="#4B934E"
+                        Foreground="White"
+                        Padding="40 10"
+                        Margin="10 0 0 0"
+                        Command="{Binding AcceptCommand, UpdateSourceTrigger=PropertyChanged}"
+                        Content="Tambah" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
