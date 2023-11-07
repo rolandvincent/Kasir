@@ -12,6 +12,8 @@
         AllowsTransparency="True"
         x:Name="root"
         SizeChanged="root_SizeChanged"
+        KeyDown="root_KeyDown"
+        MouseMove="root_MouseMove"
         Title="WindowBaseFullscreen" Height="650" Width="1000"
         WindowStartupLocation="CenterScreen">
     <Window.DataContext>
@@ -44,7 +46,7 @@
     </WindowChrome.WindowChrome>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Border x:Name="MainWindowBorder"
@@ -52,6 +54,7 @@
                 Grid.RowSpan="2"
                 CornerRadius="10" />
         <Border Background="{DynamicResource Menu.Background}"
+                x:Name="TitleBar"
                 Panel.ZIndex="999"
                 BorderBrush="{DynamicResource Menu.Background}">
             <Border.Effect>
@@ -85,14 +88,15 @@
                             WindowChrome.IsHitTestVisibleInChrome="True"
                             ToolTip="Full Screen"
                             x:Name="BtnFullscreen"
+                            Click="BtnFullscreen_Click"
                             Width="40">
                         <Path Data="M800,538.9v224.6c0,19.9-15.1,35.6-34.8,36.5l0,0h-0.3c-0.5,0-0.9,0-1.4,0h-225c-20.5,0-36.5-16-36.5-36.5 c0-20.5,16-36.5,36.5-36.5H727V538.9c0-10,3.7-19.2,10.4-25.9c6.7-6.7,15.8-10.4,25.7-10.4c9.9,0,19.2,3.7,26,10.3 C796.1,519.7,800,528.9,800,538.9z
                               M538.6,0h224.6c19.9,0,35.6,15.1,36.5,34.8l0,0v0.3c0,0.5,0,0.9,0,1.4v225c0,20.5-16,36.5-36.5,36.5 c-20.5,0-36.5-16-36.5-36.5V73H538.6c-10,0-19.2-3.7-25.9-10.4c-6.7-6.7-10.4-15.8-10.4-25.7c0-9.9,3.7-19.2,10.3-26 C519.4,3.9,528.6,0,538.6,0z
                               M0,261.4V36.8C0,16.9,15.1,1.2,34.8,0.3l0,0h0.3c0.5,0,0.9,0,1.4,0h225c20.5,0,36.5,16,36.5,36.5 c0,20.5-16,36.5-36.5,36.5H73v188.1c0,10-3.7,19.2-10.4,25.9c-6.7,6.7-15.8,10.4-25.7,10.4c-9.9,0-19.2-3.7-26-10.3 C3.9,280.6,0,271.4,0,261.4z
-                              M261.7,800.3H37.1c-19.9,0-35.6-15.1-36.5-34.8l0,0v-0.3c0-0.5,0-0.9,0-1.4v-225c0-20.5,16-36.5,36.5-36.5 c20.5,0,36.5,16,36.5,36.5v188.5h188.1c10,0,19.2,3.7,25.9,10.4c6.7,6.7,10.4,15.8,10.4,25.7c0,9.9-3.7,19.2-10.3,26 C280.9,796.4,271.7,800.3,261.7,800.3z" 
+                              M261.7,800.3H37.1c-19.9,0-35.6-15.1-36.5-34.8l0,0v-0.3c0-0.5,0-0.9,0-1.4v-225c0-20.5,16-36.5,36.5-36.5 c20.5,0,36.5,16,36.5,36.5v188.5h188.1c10,0,19.2,3.7,25.9,10.4c6.7,6.7,10.4,15.8,10.4,25.7c0,9.9-3.7,19.2-10.3,26 C280.9,796.4,271.7,800.3,261.7,800.3z"
                               Fill="White"
                               Stretch="Uniform"
-                              Height="18"/>
+                              Height="18" />
                     </Button>
                     <Button Style="{DynamicResource TitleBarButtonStyle}"
                             WindowChrome.IsHitTestVisibleInChrome="True"
@@ -123,7 +127,35 @@
             </Grid>
         </Border>
         <Grid Grid.Row="1">
-
+            <Button Style="{DynamicResource ButtonNoTemplate}"
+                    Visibility="Collapsed"
+                    Cursor="Hand"
+                    x:Name="btnExitFullscreen"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"
+                    Panel.ZIndex="1"
+                    Height="50"
+                    Width="50"
+                    Click="ExitFullscreen_Click">
+                <Grid>
+                    <Ellipse Fill="#ccc" />
+                    <TextBlock Text="r"
+                               FontFamily="Webdings"
+                               FontSize="26"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Foreground="White" />
+                </Grid>
+                <Button.Effect>
+                    <DropShadowEffect BlurRadius="15"
+                                      Opacity="0.7"
+                                      Direction="270"
+                                      RenderingBias="Performance"
+                                      ShadowDepth="0" />
+                </Button.Effect>
+            </Button>
+            <Grid x:Name="PopupContainer"
+                  Panel.ZIndex="1" />
             <ContentControl x:Name="Pages"
                             Content="{Binding CurrentView}" />
         </Grid>

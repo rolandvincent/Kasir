@@ -79,5 +79,6 @@ namespace Kasir.Utils.Controls
         // Using a DependencyProperty as the backing store for BorderRadius.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(PlaceholderTextBox), new PropertyMetadata(new CornerRadius(0)));
+
     }
 }

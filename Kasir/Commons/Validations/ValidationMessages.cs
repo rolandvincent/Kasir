@@ -11,5 +11,6 @@ namespace Kasir.Commons.Validations
         public const string RequiredError = "* Kolom {0} tidak boleh kosong!";
         public const string NumericError = "* Kolom {0} harus berisi angka!";
         public const string MinMaxError = "* Kolom {0} harus berisi angka antara {1} dan {2}!";
+        public const string NullError = "* Kolom {0} tidak boleh kosong";
     }
 }

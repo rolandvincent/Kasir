@@ -27,7 +27,7 @@ namespace Kasir.Utils.Controls
 
         public MessageToast()
         {
-            Opacity = 0;
+            base.Opacity = 0;
             DismissCommand = new RelayCommand(Dismiss);
 
             this.Loaded += MessageToast_Loaded;
@@ -88,11 +88,11 @@ namespace Kasir.Utils.Controls
 
             while (stopwatch.Elapsed < AnimationDuration)
             {
-                this.Opacity = 1- (stopwatch.ElapsedMilliseconds / AnimationDuration.TotalMilliseconds);
+                base.Opacity = (1- (stopwatch.ElapsedMilliseconds / AnimationDuration.TotalMilliseconds))* this.Opacity;
                 await Task.Delay(1);
             }
             stopwatch.Stop();
-            this.Opacity = 0;
+            base.Opacity = 0;
             ToastCloseAnimationFinished?.Invoke(this, new EventArgs());
         }
 
@@ -103,11 +103,11 @@ namespace Kasir.Utils.Controls
 
             while (stopwatch.Elapsed < AnimationDuration)
             {
-                this.Opacity = stopwatch.ElapsedMilliseconds / AnimationDuration.TotalMilliseconds;
+                base.Opacity = stopwatch.ElapsedMilliseconds / AnimationDuration.TotalMilliseconds * this.Opacity;
                 await Task.Delay(1);
             }
             stopwatch.Stop();
-            this.Opacity = 1;
+            base.Opacity = this.Opacity;
         }
 
         public override void OnApplyTemplate()
@@ -156,6 +156,17 @@ namespace Kasir.Utils.Controls
 
         public static readonly DependencyProperty CloseButtonVisibilityProperty =
             DependencyProperty.Register("CloseButtonVisibility", typeof(Visibility), typeof(MessageToast), new PropertyMetadata(Visibility.Collapsed));
+
+        public new double Opacity
+        {
+            get { return (double)GetValue(OpacityProperty); }
+            set { SetValue(OpacityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Opacity.  This enables animation, styling, binding, etc...
+        public static new readonly DependencyProperty OpacityProperty =
+            DependencyProperty.Register("Opacity", typeof(double), typeof(MessageToast), new PropertyMetadata(0d));
+
 
     }
 }

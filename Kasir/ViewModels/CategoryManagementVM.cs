@@ -123,7 +123,7 @@ namespace Kasir.ViewModels
         public void NewCategory(object view)
         {
             var AddProduct = new AddCategoryVM();
-            AddProduct.AcceptClick += AddProduct_ApplyClick;
+            AddProduct.AcceptClick += AddCategory_ApplyClick;
             var popupModal = _modalDialogManager.CreateNewPopupModal("Tambah Kategori", AddProduct);
             AddProduct.CancelClick += delegate
             {
@@ -153,7 +153,7 @@ namespace Kasir.ViewModels
 
         }
 
-        private async void AddProduct_ApplyClick(object? sender, AcceptEventArgs e)
+        private async void AddCategory_ApplyClick(object? sender, AcceptEventArgs e)
         {
             if (e.HasError)
             {

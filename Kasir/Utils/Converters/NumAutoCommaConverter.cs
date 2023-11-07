@@ -8,26 +8,22 @@ using System.Windows.Data;
 
 namespace Kasir.Utils.Converters
 {
-    public class IntToPriceIDRConverter : IValueConverter
+    public class NumAutoCommaConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is int price)
-            {
-                string formattedPrice = string.Format(culture,"Rp{0:N0}", price);
-                return formattedPrice;
-            }else if(value is long priceLong)
-            {
-                string formattedPrice = string.Format(culture, "Rp{0:N0}", priceLong);
-                return formattedPrice;
-            }
+                return string.Format(culture, "{0:N0}", price);
+            else if (value is long priceLong)
+                return string.Format(culture, "{0:N0}", priceLong);
 
-            return "Rp0";
+            return string.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value == null || string.IsNullOrWhiteSpace(value.ToString())) return null;
+            return long.TryParse(value?.ToString().Replace(",","").Replace(".", ""), out long result) ? result : 0;
         }
     }
 }

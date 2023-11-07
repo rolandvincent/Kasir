@@ -38,7 +38,7 @@ namespace Kasir.Utils.Controls
 
         private async void PopupModal_PopupShowing(object? sender, EventArgs e)
         {
-            this.Opacity = 0;       
+            base.Opacity = 0;       
             Visibility = Visibility.Visible;
 
             while (GetTemplateChild("InnerContent") as FrameworkElement == null)
@@ -54,13 +54,13 @@ namespace Kasir.Utils.Controls
            
             while (_timer.ElapsedMilliseconds < AnimationDuration.TotalMilliseconds)
             {
-                this.Opacity = _timer.ElapsedMilliseconds / AnimationDuration.TotalMilliseconds;
+                base.Opacity = _timer.ElapsedMilliseconds / AnimationDuration.TotalMilliseconds * this.Opacity;
                 double scale = be.Ease(_timer.ElapsedMilliseconds / AnimationDuration.TotalMilliseconds)/2 + 0.5;
                 if (InnerContent != null)
                 InnerContent.RenderTransform = new ScaleTransform(scale, scale);
                 await Task.Delay(1);
             }
-            this.Opacity = 1;
+            base.Opacity = this.Opacity;
         }
 
 
@@ -74,7 +74,7 @@ namespace Kasir.Utils.Controls
 
             while (_timer.ElapsedMilliseconds < AnimationDuration.TotalMilliseconds)
             {
-                this.Opacity = 1 - (_timer.ElapsedMilliseconds / AnimationDuration.TotalMilliseconds);
+                base.Opacity = (1 - (_timer.ElapsedMilliseconds / AnimationDuration.TotalMilliseconds)) * this.Opacity;
                 double scale = be.Ease(1- _timer.ElapsedMilliseconds / AnimationDuration.TotalMilliseconds) / 2 + 0.5;
                 if (InnerContent != null)
                     InnerContent.RenderTransform = new ScaleTransform(scale, scale);
@@ -110,6 +110,18 @@ namespace Kasir.Utils.Controls
 
         public static readonly DependencyProperty IsOpenProperty =
             DependencyProperty.Register("IsOpen", typeof(bool), typeof(PopupModal), new PropertyMetadata(false));
+
+        public new double Opacity
+        {
+            get { return (double)GetValue(OpacityProperty); }
+            set { SetValue(OpacityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Opacity.  This enables animation, styling, binding, etc...
+        public static new readonly DependencyProperty OpacityProperty =
+            DependencyProperty.Register("Opacity", typeof(double), typeof(PopupModal), new PropertyMetadata(1d));
+
+
 
         public string Header
         {

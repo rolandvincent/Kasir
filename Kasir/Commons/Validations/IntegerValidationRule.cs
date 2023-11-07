@@ -58,6 +58,9 @@ namespace Kasir.Commons.Validations
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
+            if (string.IsNullOrEmpty(value.ToString()))
+                return ValidationResult.ValidResult;
+
             int num = 0;
 
             if (!int.TryParse(value.ToString(), out num))
@@ -73,7 +76,7 @@ namespace Kasir.Commons.Validations
                                            FieldName, Min, Max));
             }
 
-            return new ValidationResult(true, null);
+            return ValidationResult.ValidResult;
         }
     }
 }

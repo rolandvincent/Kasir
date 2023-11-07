@@ -4,9 +4,11 @@ using Kasir.Commons.Input;
 using Kasir.DbContexts;
 using Kasir.Model;
 using Kasir.ModelLinker;
+using Kasir.Services.ProductCreators;
 using Kasir.Services.ProductProviders;
 using Kasir.Utils.Controls;
 using Kasir.Utils.Dialog;
+using Kasir.ViewModels.PopupModelVM;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -143,51 +145,70 @@ namespace Kasir.ViewModels
             popupModal.IsOpen = true;
         }
 
-        private void AddProduct_AcceptClick(object sender, PopupModelVM.AcceptEventArgs args)
+        private async void AddProduct_AcceptClick(object sender, PopupModelVM.AcceptEventArgs args)
         {
             if (args.HasError)
             {
-                _modalDialogManager.MessageEqueue(new MessageToast()
-                {
-                    BorderBrush = new SolidColorBrush(Colors.White),
-                    BorderThickness = new Thickness(2),
-                    Background = new SolidColorBrush(Colors.Red),
-                    Content = "Failed Added Product"
-                });
+                _modalDialogManager.MessageEqueue("Lengkapi data terlebih dahulu!", promote:true);
                 string errors = "";
                 foreach (var errList in args.Errors)
                 {
                     foreach (var err in errList.Value)
-                    {
                         errors += err + '\n';
-                    }
                 }
                 var modal = _modalDialogManager.CreateNewPopupModal("Error", new TextBlock() { Text = string.Join('\n', errors), Foreground= new SolidColorBrush(Colors.White), FontSize=16, Margin=new Thickness(20) });
                 modal.IsOpen = true;
             }
             else
             {
-                PopupModal modal = _modalDialogManager.CreateNewPopupModal("Modal", new Button() { Content = "HI" });
-                modal.IsOpen = true;
-                _modalDialogManager.MessageEqueue(new MessageToast()
+                using (iCassierDbContext context = new iCassierDbContextFactory().CreateDbContext(new string[] { }))
                 {
-                    BorderBrush = new SolidColorBrush(Colors.White),
-                    BorderThickness = new Thickness(2),
-                    Background = new SolidColorBrush(Colors.DarkGreen),
-                    Content = "Success Added Product"
-                });
-                OnProductListChanged?.Invoke(sender, EventArgs.Empty);
-            }
-   
+                    var productVM = sender as AddProductVM;
+                    if (!string.IsNullOrEmpty(productVM.Barcode) && context.Products.Any(x => x.Barcode == productVM.Barcode))
+                    {
+                        _modalDialogManager.MessageEqueue("Kode barcode telah digunakan sebelumnya.");
+                        return;
+                    }
+                    else if (!await context.Categories.ContainsAsync(productVM.SelectedCategory))
+                    {
+                        _modalDialogManager.MessageEqueue("Kategori tidak terdaftar");
+                        return;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            await context.Products.AddAsync(new Product()
+                            {
+                                Barcode = string.IsNullOrEmpty(productVM.Barcode) ? null : productVM.Barcode,
+                                CategoryID = productVM.SelectedCategory.Id,
+                                Name = productVM.ProductName,
+                                Notes = string.IsNullOrEmpty(productVM.Notes) ? null : productVM.Notes,
+                                Price = (long)productVM.Price,
+                                PromoPrice = (long?)productVM.PromoPrice,
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            _modalDialogManager.MessageEqueue("Error. " + ex.InnerException?.Message);
+                            return;
+                        }
+                        await context.SaveChangesAsync();
+
+                        _modalDialogManager.MessageEqueue("Data ditambahkan.");
+                        OnProductListChanged?.Invoke(sender, EventArgs.Empty);
+                    }
+                }
+            }   
         }
 
         public async void DeleteProduct(object parameter)
         {
-            Product produk = (Product)parameter;
+            ProductLnk produk = (ProductLnk)parameter;
             using (iCassierDbContext context = new iCassierDbContextFactory().CreateDbContext(new string[] { }))
             {
-                context.Products.Remove(produk);
-                context.SaveChanges();
+                context.Products.Remove(new DatabaseProductCreator(context).ToProduct(produk));
+                await context.SaveChangesAsync();
             }
             _modalDialogManager.MessageQueueClear();
             _modalDialogManager.MessageEqueue("Data dihapus!");

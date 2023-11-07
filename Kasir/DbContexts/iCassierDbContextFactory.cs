@@ -17,18 +17,12 @@ namespace Kasir.DbContexts
             {
                 var optionsBuilder = new DbContextOptionsBuilder<iCassierDbContext>();
                 if (DB_Type.ToLower() == "mysql")
-                {
                     optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-                }else if(DB_Type.ToLower() == "sqlserver")
-                {
+                else if(DB_Type.ToLower() == "sqlserver")
                     optionsBuilder.UseSqlServer(connectionString);
-                }
                 else if (DB_Type.ToLower() == "sqlite")
-                {
                     optionsBuilder.UseSqlite(connectionString);
-                }
-                else
-                {
+                else { 
                     MessageBox.Show($"Connection Type '{DB_Type}' not supported.", "iCassier SQL Connection", MessageBoxButton.OK, MessageBoxImage.Error);
                     Environment.Exit(1);
                 }

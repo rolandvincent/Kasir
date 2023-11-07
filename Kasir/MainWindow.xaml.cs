@@ -16,9 +16,11 @@ namespace Kasir
         public MainWindow()
         {
             InitializeComponent();
-            //TextBoxInputDelay searchBox = new TextBoxInputDelay(adawdaw, TimeSpan.FromMilliseconds(500));
-            //searchBox.InputDelayChanged += SearchBox_InputDelayChanged;
-            
+            if (SystemParameters.PrimaryScreenHeight > 800 && SystemParameters.PrimaryScreenWidth > 1400)
+            {
+                Height = 800;
+                Width = 1400;
+            }
         }
 
         // Can execute

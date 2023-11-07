@@ -1,8 +1,16 @@
 ﻿using Kasir.Commons.Commands;
 using Kasir.Commons.Validations;
+using Kasir.DbContexts;
+using Kasir.Model;
 using Kasir.Utils.Controls;
 using Kasir.Utils.Dialog;
 using Kasir.Views.PopupModalView;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace Kasir.ViewModels.PopupModelVM
@@ -15,8 +23,16 @@ namespace Kasir.ViewModels.PopupModelVM
         {
             _modalDialogManager = modalDialog;
             BarcodeScanCommand = new RelayCommand(BarcodeScan);
+
+            Task.Run(async() =>
+            {
+                using(iCassierDbContext context = new iCassierDbContextFactory().CreateDbContext(Array.Empty<string>()))
+                Categories = await context.Categories.ToListAsync();
+                OnPropertyChanged(nameof(Categories));
+            });
         }
 
+        public List<Category> Categories { get; set; }
 
         private void BarcodeScan(object parameter)
         {
@@ -58,16 +74,18 @@ namespace Kasir.ViewModels.PopupModelVM
             }
         }
 
-        private int _categoryId;
-        public int CategoryId
+        private Category _category;
+        public Category SelectedCategory
         {
             get
             {
-                return _categoryId;
+                RegisterError(new[] { new NullValidationRule() { FieldName = "Kategori", CustomErrorMessage = ValidationMessages.NullError } });
+                return _category;
             }
             set
             {
-                _categoryId = value;
+                ValidateColumn(value);
+                _category = value;
                 OnPropertyChanged();
             }
         }
@@ -86,7 +104,7 @@ namespace Kasir.ViewModels.PopupModelVM
             }
         }
 
-        private int _stock;
+        private int _stock = 0;
         public int Stock
         {
             get
@@ -105,7 +123,7 @@ namespace Kasir.ViewModels.PopupModelVM
         {
             get
             {
-                RegisterError(new[] { new LongValidationRule() { FieldName = "Harga", Min = 0, MinMaxErrorMessage = ValidationMessages.MinMaxError, TypeErrorMessage = ValidationMessages.NumericError } });
+                RegisterError(new ValidationRule[] { new TextNotEmptyValidation() { FieldName = "Harga", CustomErrorMessage=ValidationMessages.RequiredError } , new LongValidationRule() { FieldName = "Harga", Min = 0, MinMaxErrorMessage = ValidationMessages.MinMaxError, TypeErrorMessage = ValidationMessages.NumericError } });
                 return _price;
             }
             set
@@ -116,7 +134,7 @@ namespace Kasir.ViewModels.PopupModelVM
             }
         }
 
-        private object _promoPrice = 0;
+        private object _promoPrice;
         public object PromoPrice
         {
             get

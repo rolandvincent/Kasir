@@ -7,11 +7,13 @@
              xmlns:controls="clr-namespace:Kasir.Utils.Controls"
              xmlns:validations="clr-namespace:Kasir.Commons.Validations"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:converters="clr-namespace:Kasir.Utils.Converters"
              mc:Ignorable="d" 
              Foreground="White"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:NumAutoCommaConverter x:Key="NumAutoCommaConverter" />
     </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" Style="{DynamicResource CScrollView}">
         <Grid Margin="20"
@@ -57,8 +59,11 @@
                 <ComboBox FontSize="20"
                           Height="38"
                           Foreground="Black"
-                          Padding="5 0">
-                    <ComboBoxItem>DD</ComboBoxItem>
+                          Padding="5 0" 
+                          ItemsSource="{Binding Categories}"
+                          SelectedItem="{Binding SelectedCategory}"
+                          DisplayMemberPath="Name"
+                          IsEditable="True">
                 </ComboBox>
             </StackPanel>
             <StackPanel Grid.Row="2">
@@ -101,6 +106,7 @@
                 <controls:PlaceholderTextBox CornerRadius="5"
                                              IsEnabled="False"
                                              x:Name="txt_Stock"
+                                             Text="{Binding Stock}"
                                              FontSize="20" />
             </StackPanel>
             <StackPanel Grid.Row="4">
@@ -109,6 +115,7 @@
                                              x:Name="txt_Price"
                                              FontSize="20">
                     <Binding Path="Price"
+                             Converter="{StaticResource NumAutoCommaConverter}"
                              UpdateSourceTrigger="PropertyChanged"
                              ValidatesOnDataErrors="True"
                              Mode="TwoWay">
@@ -120,11 +127,12 @@
                            Visibility="{Binding ElementName=txt_Price, Path=(Validation.HasError), Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
             <StackPanel Grid.Row="5">
-                <TextBlock Text="Harga Promo (IDR) *" />
+                <TextBlock Text="Harga Promo (IDR)" />
                 <controls:PlaceholderTextBox CornerRadius="5"
                                              x:Name="txt_PromoPrice"
                                              FontSize="20">
                     <Binding Path="PromoPrice"
+                             Converter="{StaticResource NumAutoCommaConverter}"
                              UpdateSourceTrigger="PropertyChanged"
                              ValidatesOnDataErrors="True"
                              Mode="TwoWay">

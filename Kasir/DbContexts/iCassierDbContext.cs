@@ -14,13 +14,13 @@ namespace Kasir.DbContexts
         {
             
         }
-
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>()
                 .HasIndex(x => x.Name)
+                .IsUnique();
+            modelBuilder.Entity<Product>()
+                .HasIndex(x => x.Barcode)
                 .IsUnique();
             base.OnModelCreating(modelBuilder);
         }

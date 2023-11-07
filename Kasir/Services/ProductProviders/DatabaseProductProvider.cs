@@ -49,7 +49,7 @@ namespace Kasir.Services.ProductProviders
         }
 
 
-        private ProductLnk ToProductLnk (Product product)
+        public ProductLnk ToProductLnk (Product product)
         {
             return new ProductLnk()
             {

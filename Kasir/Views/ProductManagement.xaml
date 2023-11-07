@@ -202,7 +202,7 @@
                                                 Padding="0 0 6.5 0"
                                                 BorderThickness="0 0 1 0"
                                                 Margin="0 0 -6.5 0">
-                                            <TextBlock Text="{Binding PromoPrice, FallbackValue=-}"
+                                            <TextBlock Text="{Binding PromoPrice, Converter={StaticResource IntToPriceIDRConverter}}"
                                                        Margin="0 0 3 0"
                                                        VerticalAlignment="Center"
                                                        TextTrimming="CharacterEllipsis"></TextBlock>

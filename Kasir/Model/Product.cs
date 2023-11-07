@@ -14,7 +14,7 @@ namespace Kasir.Model
         public int CategoryID { get; set; }
         [Required]
         public string Name { get; set; }
-        public string Barcode { get; set; }
+        public string? Barcode { get; set; }
         public string? Notes { get; set; }
         [Required]
         public long Price { get; set; }
